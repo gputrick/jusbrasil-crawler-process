@@ -1,0 +1,6 @@
+
+venv/
+
+processsearch/__pycache__/
+
+processsearch/migrations/__pycache__/
