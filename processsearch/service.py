@@ -24,6 +24,7 @@ def crawler_process(process_number, id=None):
 
     process = Process(
         id=id, #If is already crawled, has to update the object
+        process_number=process_number,
         process=find_by_label(soup, 'Processo:'),
         classe=find_by_label(soup, 'Classe:'),
         subject=find_by_label(soup, 'Assunto:'),
