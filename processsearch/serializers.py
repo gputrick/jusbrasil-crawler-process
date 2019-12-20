@@ -5,10 +5,10 @@ from .models import Process, Move
 class MoveSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Move
-        fields = ['date', 'description']
+        fields = '__all__'
 
 class ProcessSerializer(serializers.HyperlinkedModelSerializer):
     moves = MoveSerializer(many=True)
     class Meta:
         model = Process
-        fields = ['process', 'classe', 'subject', 'distribuition', 'control', 'judge', 'action_value', 'moves' ]
+        fields = '__all__'
