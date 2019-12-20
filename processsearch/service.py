@@ -1,7 +1,7 @@
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString
 import json
-from .models import Process, Move
+from .models import Process, Move, RelatedPart, RelatedPeople
 import datetime
 
 #Const search url, used by prefix for process number
@@ -18,7 +18,7 @@ def find_by_label(rows, labelText):
         label = row.find('td')
         label_splited = label.text.strip().split(':')
         if label_splited[0] == labelText:
-            return (label.find_next_sibling('td').text.strip() if label_splited[1] == '' else label_splited[1])
+            return (label.find_next_sibling('td').text.strip() if label_splited[1].strip() == '' else label_splited[1].strip())
 
 #Crawler the process if already exisits update it
 def crawler_process(process_number, id=None):
@@ -42,11 +42,14 @@ def crawler_process(process_number, id=None):
 
     crawler_moves(soup, process)
 
+    crawler_related_parts(soup, process)
+
+
 #Crawler the moves list and save them
 def crawler_moves(soup, process):
 
-    moves_rows = soup.select("tbody#tabelaTodasMovimentacoes tr")
-    for row in moves_rows:
+    rows = soup.select("tbody#tabelaTodasMovimentacoes tr")
+    for row in rows:
         colums = row.select('td')
         move = Move(
             date=datetime.datetime.strptime(colums[0].text.strip(), "%d/%m/%Y").date(), #1º column
@@ -54,3 +57,29 @@ def crawler_moves(soup, process):
         )
         move.save()
         process.moves.add(move)
+
+#Crawler the related parts and save them
+def crawler_related_parts(soup, process):
+
+    rows = soup.select("table#tablePartesPrincipais tr")
+    for row in rows:
+        columns = row.select('td')
+
+        related_part = RelatedPart(
+            kind=columns[0].text.strip(),
+            description=columns[1].next_element.strip()
+        )
+        related_part.save()
+        process.related_parts.add(related_part)
+        crawler_related_people(columns[1], related_part)
+
+#Crawler the related people from 2º column of related parts
+def crawler_related_people(related_people_column, related_part):
+    kinds = related_people_column.select('span')
+    for kind in kinds:
+        related_people = RelatedPeople(
+            kind=kind.text.strip(),
+            name=kind.next_sibling.strip()
+        )
+        related_people.save()
+        related_part.related_people.add(related_people)
