@@ -54,9 +54,9 @@ def crawler_moves(soup, process):
         move = Move(
             date=datetime.datetime.strptime(colums[0].text.strip(), "%d/%m/%Y").date(), #1º column
             description=colums[2].text.strip(), #3º column (2º blank)
+            process=process
         )
         move.save()
-        process.moves.add(move)
 
 #Crawler the related parts and save them
 def crawler_related_parts(soup, process):
@@ -67,10 +67,10 @@ def crawler_related_parts(soup, process):
 
         related_part = RelatedPart(
             kind=columns[0].text.strip(),
-            description=columns[1].next_element.strip()
+            description=columns[1].next_element.strip(),
+            process=process,
         )
         related_part.save()
-        process.related_parts.add(related_part)
         crawler_related_people(columns[1], related_part)
 
 #Crawler the related people from 2º column of related parts
@@ -79,7 +79,7 @@ def crawler_related_people(related_people_column, related_part):
     for kind in kinds:
         related_people = RelatedPeople(
             kind=kind.text.strip(),
-            name=kind.next_sibling.strip()
+            name=kind.next_sibling.strip(),
+            related_part=related_part
         )
         related_people.save()
-        related_part.related_people.add(related_people)
