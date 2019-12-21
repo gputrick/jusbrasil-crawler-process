@@ -11,6 +11,7 @@ from .serializers import MoveSerializer, ProcessSerializer
 from .service import crawler_process
 
 
+
 #Crud process view and crawler
 class ProcessViewSet(viewsets.ModelViewSet):
     queryset = Process.objects.all()

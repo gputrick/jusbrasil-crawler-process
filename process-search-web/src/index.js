@@ -11,6 +11,7 @@ ReactDOM.render(
         <Switch>
             <Route path="">
                 <Admin>
+                    <Redirect to='process'/>
                     <Route path="/process" component={ProcessSearch}/>
                 </Admin>
             </Route>

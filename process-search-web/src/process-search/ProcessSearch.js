@@ -1,15 +1,25 @@
 import { Input } from 'antd';
 import React, { Component } from 'react';
 import './ProcessSearch.scss';
+import axios from 'axios'
 
 const { Search } = Input;
 
 class ProcessSearch extends Component {
 
-    crawlerProcess(processNumber){
-        console.log(processNumber);
+    constructor(){
+        super();
+        this.state = {process: {}}
     }
 
+    crawlerProcess(processNumber){
+
+        axios.get(`/processes/crawler?process_number=${processNumber}`)
+        .then( process => { 
+            this.setState({process: process})
+        })
+    }
+    
     render() {
         return (
             <div className="ProcessSearch">
