@@ -1,4 +1,4 @@
-import { Input, Divider } from 'antd';
+import { Input } from 'antd';
 import React, { Component } from 'react';
 import './ProcessSearch.scss';
 import axios from 'axios'
@@ -23,7 +23,7 @@ class ProcessSearch extends Component {
         this.setState({loading: true});
         axios.get(`/processes/crawler?process_number=${processNumber}`)
         .then( response => { 
-            this.props.history.push(`?processNumber=${processNumber}`)
+            this.props.history.push(`?processNumber=${processNumber}`);
             this.setState({process: response.data, loading: false});
         })
         .catch( response => {
@@ -54,7 +54,6 @@ class ProcessSearch extends Component {
                         enterButton="Buscar"
                         size="large"
                         value={this.state.processNumber}
-                        enterButton
                         onChange={this.handleChange.bind(this)}
                         onSearch={value => this.crawlerProcess(value)}
                     />

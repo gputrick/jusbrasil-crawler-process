@@ -1,6 +1,7 @@
 import { List } from 'antd';
 import React, { Component } from 'react';
 import './MovesInfo.scss';
+import moment from 'moment';
 
 class MovesInfo extends Component {
     render() {
@@ -12,14 +13,14 @@ class MovesInfo extends Component {
                 <div className="MovesInfo">
                     <List
                         size="large"
-                        header={<h3 style={{color: '#2f2f2f', margin: 0}}>MOVIMENTAÇÕES</h3>}
+                        header={<h3 style={{ margin: 0 }}>MOVIMENTAÇÕES</h3>}
                         bordered
                         dataSource={this.props.moves}
                         renderItem={move =>
                             (
                                 <List.Item>
                                     <div className="column">
-                                        <span>{move.date}</span>
+                                        <span>{moment(move.date).format('DD/MM/YYYY')}</span>
                                         <h4>{move.description}</h4>
                                     </div>
                                 </List.Item>

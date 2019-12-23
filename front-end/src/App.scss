@@ -1,5 +1,5 @@
 .layout {
-    h3{
+    .logo{
         color: white;
     }
 }
@@ -10,4 +10,8 @@
 
 .ant-layout-content{
     padding: 0 50px;
+}
+
+.process-subtitle{
+    line-height: 3em;
 }

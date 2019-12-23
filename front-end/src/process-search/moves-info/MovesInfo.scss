@@ -1,6 +1,9 @@
 .column{
     display: flex;
     flex-direction: column;
+    span{
+        font-size: 12px;
+    }
 }
 
 .ant-list-header{

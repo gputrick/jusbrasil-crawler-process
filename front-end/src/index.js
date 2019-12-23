@@ -1,6 +1,6 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Admin from './App';
 import './index.css';
 import ProcessSearch from './process-search/ProcessSearch';

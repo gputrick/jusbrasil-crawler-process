@@ -10,7 +10,7 @@ class App extends Component {
             <div className="App" style={{ height: '100%' }}>
                 <Layout className="layout">
                     <Header>
-                        <h3>Crawler Jusbrasil</h3>
+                        <h3 className="logo">Crawler Jusbrasil</h3>
                     </Header>
                     <Content>
                         {this.props.children}
