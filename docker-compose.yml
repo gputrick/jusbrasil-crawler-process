@@ -1,0 +1,30 @@
+version: '3'
+services:
+    frontend:
+        build:
+            dockerfile: ./frontend/react.dockerfile
+            context: .
+        volumes:
+            - ./frontend/:/var/www/frontend
+            - /var/www/frontend/node_modules
+        image: gputrick/react
+        container_name: react
+        ports:
+            - "3000:3000"
+        networks: 
+            - crawler-network
+    backend:
+        build:
+            dockerfile: ./backend/django.dockerfile
+            context: .
+        volumes:
+            - ./backend/:/var/www/backend
+        image: gputrick/django
+        container_name: django
+        ports:
+            - "8000:8000"
+        networks: 
+            - crawler-network
+networks: 
+    crawler-network:
+        driver: bridge

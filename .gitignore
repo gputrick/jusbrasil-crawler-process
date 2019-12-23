@@ -1,10 +1,2 @@
 
-venv/
-
-processsearch/__pycache__/
-
-processsearch/migrations/__pycache__/
-
 \.vscode/
-
-crawlerprocess/__pycache__/

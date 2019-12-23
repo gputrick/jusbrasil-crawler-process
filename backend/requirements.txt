@@ -1,0 +1,5 @@
+Django
+django-cors-headers
+djangorestframework
+bs4
+requests
