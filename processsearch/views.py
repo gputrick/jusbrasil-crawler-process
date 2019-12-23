@@ -35,15 +35,16 @@ class ProcessViewSet(viewsets.ModelViewSet):
         if process and process[0].updated_at >= last_day:
             return Response(self.get_serializer(get_process_by_number(process_number)).data)
         else:
-            #Update the process it wasn't
-            process_id = (process[0].id if process else None)
-            crawler_process(process_number, process_id)
+            #Delete the existing process
+            if process:
+                get_process_by_number(process_number).delete()
+                crawler_process(process_number)
         
             return Response(self.get_serializer(get_process_by_number(process_number)).data)
 
 #Search the process by number
 def get_process_by_number(process_number):
-    return Process.objects.get(process_number=process_number) 
+    return Process.objects.get(process_number=process_number)
 
 #Moves view
 class MoveViewSet(viewsets.ModelViewSet):

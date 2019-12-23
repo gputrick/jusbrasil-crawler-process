@@ -20,15 +20,14 @@ def find_by_label(rows, labelText):
         if label_splited[0] == labelText:
             return (label.find_next_sibling('td').text.strip() if label_splited[1].strip() == '' else label_splited[1].strip())
 
-#Crawler the process if already exisits update it
-def crawler_process(process_number, id=None):
+#Crawler the process
+def crawler_process(process_number):
     
     soup = get_html_parsed(process_number)
 
     rows = soup.select("table.secaoFormBody tr")
 
     process = Process(
-        id=id, #If is already crawled, has to update the object
         process_number=process_number,
         kind=find_by_label(rows, 'Classe'),
         area=find_by_label(rows, 'Área'),
@@ -66,7 +65,7 @@ def crawler_related_parts(soup, process):
         columns = row.select('td')
 
         related_part = RelatedPart(
-            kind=columns[0].text.strip(),
+            kind=columns[0].text.strip().replace(":", ""),
             description=columns[1].next_element.strip(),
             process=process,
         )
@@ -78,7 +77,7 @@ def crawler_related_people(related_people_column, related_part):
     kinds = related_people_column.select('span')
     for kind in kinds:
         related_people = RelatedPeople(
-            kind=kind.text.strip(),
+            kind=kind.text.strip().replace(":", ""),
             name=kind.next_sibling.strip(),
             related_part=related_part
         )

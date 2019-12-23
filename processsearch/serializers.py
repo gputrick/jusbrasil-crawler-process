@@ -10,7 +10,7 @@ class RelatedPartSerializer(serializers.ModelSerializer):
     related_people = serializers.SerializerMethodField('get_related_people')
 
     def get_related_people(self, related_part):
-        return RelatedPeopleSerializer(related_part.relatedpeople_set.all(), many=True).data,
+        return RelatedPeopleSerializer(related_part.relatedpeople_set.all(), many=True).data
 
     class Meta:
         model = RelatedPart
@@ -29,7 +29,7 @@ class ProcessSerializer(serializers.ModelSerializer):
         return MoveSerializer(process.move_set.all(), many=True).data
 
     def get_related_parts(self, process):
-        return RelatedPartSerializer(process.relatedpart_set.all(), many=True).data,
+        return RelatedPartSerializer(process.relatedpart_set.all(), many=True).data
 
     class Meta:
         model = Process
