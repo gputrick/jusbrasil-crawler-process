@@ -1,4 +1,4 @@
-import { Input } from 'antd';
+import { Input, message } from 'antd';
 import React, { Component } from 'react';
 import './ProcessSearch.scss';
 import axios from 'axios'
@@ -9,40 +9,46 @@ const { Search } = Input;
 
 class ProcessSearch extends Component {
 
-    constructor(){
+    constructor() {
         super();
         this.state = {
             processNumber: null,
-            process: null, 
-            loading: false
+            process: null,
+            loading: false,
+            notFound: false,
         }
     }
 
-    crawlerProcess(processNumber){
-        
-        this.setState({loading: true});
-        axios.get(`/processes/crawler?process_number=${processNumber}`)
-        .then( response => { 
-            this.props.history.push(`?processNumber=${processNumber}`);
-            this.setState({process: response.data, loading: false});
-        })
-        .catch( response => {
-            this.setState({loading: false});
-        })
+    crawlerProcess(processNumber) {
+        if(processNumber){
+            this.setState({ loading: true });
+            axios.get(`/processes/crawler?process_number=${processNumber}`)
+                .then(response => {
+                    this.props.history.push(`?processNumber=${processNumber}`);
+                    this.setState({ process: response.data, loading: false });
+                })
+                .catch(response => {
+                    this.props.history.push('');
+                    this.setState({ process: null, loading: false });
+                    message.error('Nenhum processo encontrado com este número');
+                })
+        } else {
+            message.error('Insira o número do processo');
+        }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         let params = qs.parse(this.props.history.location.search, { ignoreQueryPrefix: true });
-        if(params.processNumber){
-            this.setState({processNumber: params.processNumber});
+        if (params.processNumber) {
+            this.setState({ processNumber: params.processNumber });
             this.crawlerProcess(params.processNumber);
         }
     }
 
     handleChange(event) {
-        this.setState({processNumber: event.target.value});
+        this.setState({ processNumber: event.target.value });
     }
-    
+
     render() {
         return (
             <div className="ProcessSearch">
@@ -58,7 +64,6 @@ class ProcessSearch extends Component {
                         onSearch={value => this.crawlerProcess(value)}
                     />
                 </div>
-                <div style={{margin: "10px"}}></div>
                 <ProcessInfo process={this.state.process} loading={this.state.loading}/>
             </div>
 

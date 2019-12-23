@@ -8,10 +8,13 @@ import { Row, Col } from 'antd';
 
 class ProcessInfo extends Component {
     render() {
-        if (this.props.loading) {
-            return (<Skeleton active paragraph={{ rows: 1 }} />)
-        }
-        else if (this.props.process) {
+        if (!this.props.process) {
+            return null
+        } else if (this.props.loading) {
+            return (
+                <Skeleton className="ProcessInfo" active paragraph={{ rows: 20 }}/>
+            )
+        } else {
             return (
                 <div className="ProcessInfo">
                     <h1> Processo n. {this.props.process.process_number} do TJAL</h1>
@@ -23,7 +26,7 @@ class ProcessInfo extends Component {
                         <Col span={1}></Col>
                         <Col span={6}>
                             <h3 className="process-subtitle">Detalhes do processo</h3>
-                            
+
                             <div className="process-detail">
                                 <p>Classe: {this.props.process.kind}</p>
                                 <p>Área: {this.props.process.area}</p>
@@ -37,8 +40,6 @@ class ProcessInfo extends Component {
                     </Row>
                 </div>
             )
-        } else {
-            return null;
         }
     }
 }
