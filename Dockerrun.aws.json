@@ -1,0 +1,26 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+      {
+        "name": "frontend",
+        "image": "gputrick/react:latest",
+        "hostname": "frontend",
+        "essential": false,
+        "memory": 128
+      },
+      {
+        "name": "backend",
+        "image": "gputrick/django:latest",
+        "hostname": "api",
+        "essential": false,
+        "memory": 128
+      },
+      {
+        "name": "postgres",
+        "image": "postgres:9.6",
+        "hostname": "postgres",
+        "essential": false,
+        "memory": 128
+      }
+    ]
+  }

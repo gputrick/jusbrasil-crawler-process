@@ -96,7 +96,7 @@ DATABASES = {
         'NAME': 'crawler',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'postgres',
+        'HOST': 'database',
         'PORT': '5432'
     }
 }

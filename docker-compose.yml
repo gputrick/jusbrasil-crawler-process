@@ -26,8 +26,8 @@ services:
         networks: 
             - crawler-network
         depends_on: 
-            - postgres
-    postgres:
+            - database
+    database:
         image: postgres:9.6
         container_name: "postgres"
         environment:
