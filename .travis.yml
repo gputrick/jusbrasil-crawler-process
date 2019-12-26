@@ -4,7 +4,7 @@ services:
 
 before_install:
   - docker build -t gputrick/frontend:dev -f ./frontend/react-dev.dockerfile ./frontend
-  - docker build -t gputrick/backend:dev -f ./backend/django.dockerfile ./backend
+  - docker build -t gputrick/backend:dev -f ./backend/django-dev.dockerfile ./backend
 
 script:
   - docker run -e CI=true gputrick/frontend:dev npm run test
@@ -13,7 +13,7 @@ script:
 after_success:
   - docker build -t gputrick/frontend -f ./frontend/react-prod.dockerfile ./frontend
   - docker build -t gputrick/nginx ./nginx
-  - docker build -t gputrick/backend -f ./backend/django.dockerfile ./backend
+  - docker build -t gputrick/backend -f ./backend/django-prod.dockerfile ./backend
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
