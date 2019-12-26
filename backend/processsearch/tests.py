@@ -58,4 +58,3 @@ class CrawlerTestCase(TestCase):
             self.assertIsNotNone(related_part.description)
             self.assertIsNotNone(related_part.kind)
             self.assertIsNotNone(related_part.process)
-            self.assertTrue(related_part.related_people)
