@@ -1,15 +1,17 @@
 sudo: required
 services:
   - docker
+#   - postgresql
 
-before_install:
-  - docker build -t gputrick/frontend:dev -f ./frontend/react-dev.dockerfile ./frontend
-  - docker build -t gputrick/backend:dev -f ./backend/django-dev.dockerfile ./backend
-
-script:
-  - docker run -e CI=true gputrick/frontend:dev npm run test
-  - docker run gputrick/backend:dev python manage.py test
-
+  before_install:
+    - docker build -t gputrick/frontend:dev -f ./frontend/react-dev.dockerfile ./frontend
+    # - docker build -t gputrick/backend:dev -f ./backend/django-dev.dockerfile ./backend
+    # - psql -c 'create database crawler;' -U postgres
+  
+  script:
+    - docker run -e CI=true gputrick/frontend:dev npm run test
+    # - docker run gputrick/backend:dev python manage.py test
+  
 after_success:
   - docker build -t gputrick/frontend -f ./frontend/react-prod.dockerfile ./frontend
   - docker build -t gputrick/nginx ./nginx
