@@ -11,13 +11,13 @@ script:
 - docker run gputrick/backend:dev python manage.py test
   
 after_success:
-  - docker build -t gputrick/frontend -f ./frontend/react-prod.dockerfile ./frontend
+  - docker build -t gputrick/react -f ./frontend/react-prod.dockerfile ./frontend
   - docker build -t gputrick/nginx ./nginx
-  - docker build -t gputrick/backend -f ./backend/django-prod.dockerfile ./backend
+  - docker build -t gputrick/django -f ./backend/django-prod.dockerfile ./backend
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  - docker push gputrick/frontend:latest
+  - docker push gputrick/react:latest
   - docker push gputrick/nginx:latest
-  - docker push gputrick/backend:latest
+  - docker push gputrick/django:latest
 
 deploy:
   provider: elasticbeanstalk
