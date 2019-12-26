@@ -21,7 +21,7 @@ class ProcessSearch extends Component {
 
     crawlerProcess(processNumber) {
         if(processNumber){
-            this.setState({ loading: true });
+            this.setState({ process: {}, loading: true });
             axios.get(`api/processes/crawler?format=json&process_number=${processNumber}`)
                 .then(response => {
                     this.props.history.push(`?processNumber=${processNumber}`);
