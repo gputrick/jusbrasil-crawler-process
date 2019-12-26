@@ -3,3 +3,5 @@ django-cors-headers
 djangorestframework
 bs4
 requests
+psycopg2
+psycopg2-binary

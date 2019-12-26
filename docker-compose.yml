@@ -25,6 +25,20 @@ services:
             - "8000:8000"
         networks: 
             - crawler-network
-networks: 
+        depends_on: 
+            - postgres
+    postgres:
+        image: postgres:9.6
+        container_name: "postgres"
+        environment:
+            - POSTGRES_DB=crawler
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - TZ=GMT
+        volumes:
+            - "/var/lib/postgresql/data"
+        networks: 
+            - crawler-network
+networks:
     crawler-network:
         driver: bridge
