@@ -1,0 +1,35 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t gputrick/frontend:dev -f ./frontend/react-dev.dockerfile ./frontend
+  - docker build -t gputrick/backend:dev -f ./backend/django.dockerfile ./backend
+
+script:
+  - docker run -e CI=true gputrick/frontend:dev npm run test
+  - docker run gputrick/backend:dev python manage.py test
+
+after_success:
+  - docker build -t gputrick/frontend -f ./frontend/react-prod.dockerfile ./frontend
+  - docker build -t gputrick/nginx ./nginx
+  - docker build -t gputrick/backend -f ./backend/django.dockerfile ./backend
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push gputrick/frontend:latest
+  - docker push gputrick/nginx:latest
+  - docker push gputrick/backend:latest
+
+deploy:
+  provider: elasticbeanstalk
+  region: sa-east-1
+  app: jusbrasil-crawler
+  env: production
+  bucket_name: elasticbeanstalk-us-east-2-271271009836
+  bucket_path: crawler
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY_ID
+  secret_access_key:
+    secure: $AWS_SECRET_ACCESS_KEY

@@ -6,21 +6,37 @@
         "image": "gputrick/react:latest",
         "hostname": "frontend",
         "essential": false,
-        "memory": 128
+        "memory": 256
       },
       {
         "name": "backend",
         "image": "gputrick/django:latest",
-        "hostname": "api",
+        "hostname": "backend",
         "essential": false,
-        "memory": 128
+        "memory": 512,
+        "environment": [
+            {
+                "name": "DB_HOST",
+                "value": "crawler.cqkqmr4pc7jv.us-east-2.rds.amazonaws.com"
+            },
+            {
+                "name": "DB_NAME",
+                "value": "postgres"
+            }
+        ]
       },
       {
-        "name": "postgres",
-        "image": "postgres:9.6",
-        "hostname": "postgres",
-        "essential": false,
-        "memory": 128
+        "name": "nginx",
+        "image": "gputrick/nginx:latest",
+        "essential": true,
+        "memory": 128,
+        "portMappings": [
+          {
+            "hostPort": 80,
+            "containerPort": 80
+          }
+        ],
+        "links": ["frontend", "backend"]
       }
     ]
   }

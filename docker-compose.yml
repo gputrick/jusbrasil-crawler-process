@@ -2,29 +2,25 @@ version: '3'
 services:
     frontend:
         build:
-            dockerfile: ./frontend/react.dockerfile
-            context: .
+            dockerfile: react-prod.dockerfile
+            context: ./frontend
         volumes:
-            - ./frontend/:/var/www/frontend
-            - /var/www/frontend/node_modules
+            - ./frontend/:/app
+            - /app/node_modules
         image: gputrick/react
         container_name: react
         ports:
-            - "3000:3000"
-        networks: 
-            - crawler-network
+            - "5000:5000"
     backend:
         build:
-            dockerfile: ./backend/django.dockerfile
-            context: .
+            dockerfile: django.dockerfile
+            context: ./backend
         volumes:
-            - ./backend/:/var/www/backend
+            - ./backend/:/app
         image: gputrick/django
         container_name: django
         ports:
             - "8000:8000"
-        networks: 
-            - crawler-network
         depends_on: 
             - database
     database:
@@ -37,8 +33,14 @@ services:
             - TZ=GMT
         volumes:
             - "/var/lib/postgresql/data"
-        networks: 
-            - crawler-network
-networks:
-    crawler-network:
-        driver: bridge
+            
+    nginx:
+        image: "nginx:1.17.6-alpine"
+        restart: always
+        volumes:
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+        ports:
+            - "8080:80"
+        depends_on: 
+            - backend
+            - frontend
