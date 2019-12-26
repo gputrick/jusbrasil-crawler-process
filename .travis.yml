@@ -21,7 +21,7 @@ after_success:
 
 deploy:
   provider: elasticbeanstalk
-  region: sa-east-1
+  region: us-east-2
   app: jusbrasil-crawler
   env: production
   bucket_name: elasticbeanstalk-us-east-2-271271009836
